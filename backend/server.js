@@ -10,40 +10,45 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'], 
   }));
 
-let db = '';
+  app.listen(5000, ()=>{
+    console.log("server is running");
+});
 
-const intitalizeDBAndServer = ()=>{
-    try {
-    db = mysql.createPool({
+
+    
+   const db = mysql.createConnection({
         host: "localhost",
         user: 'root',
         password: 'Mahesh@143',
         database: 'userinfo'
     });
-    app.listen(5000, ()=>{
-        console.log("server is running");
-    });
-} catch(error){
-    console.log("DataBase Connection error: "+ error.message);
-}
-};
-intitalizeDBAndServer();
+    
+    db.connect((err) => {
+        if (err) {
+          console.error('Database connection failed: ');
+          return;
+        }
+        else{
+            console.log("coonected succesfully");
+        }
+      });
+      
+
+
 
 app.post('/', (request, response)=>{
     const userDetails = request.body;
     const{id,name,password} = userDetails;
     const addUserQuery = `INSERT INTO userdata(id, name, password)
-                            VALUES (
-                                    '${id}', 
-                                    '${name}',
-                                    '${password}' ) `;
-          db.query(addUserQuery, (error, result)=>{
+                            VALUES (?, ?, ?)`;
+          db.query(addUserQuery, [id, name, password], (error, result)=>{
             if(error){
+                console.log(error);
                 response.send("Error occured in post method");
             }
             else{
                 response.send("Data successfully submitted into database");
             }
-          });                          
+          });                         
 });
 

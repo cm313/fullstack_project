@@ -25,8 +25,7 @@ const UserDetails = ()=>{
                 setResponseData("response OK")
               }
             }catch(error){
-                setResponseData("error occured at fetch Api: "+error)
-                console.log(error);
+                setResponseData("error occured at fetch Api: "+error);
             }
               localStorage.setItem("count", JSON.stringify(uniqueId+1));
         }
