@@ -13,16 +13,17 @@ const UserDetails = ()=>{
         }
         if(obj.id && obj.name && obj.password){
         try{
-              const response = await fetch('http://localhost:5000/datapost',{
+              const response = await fetch('http://localhost:5000/',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(obj),
               });
-              const res = await response.json();
               console.log(response);
-              setResponseData(res);
+              if(response.OK){
+                setResponseData("response OK")
+              }
             }catch(error){
                 setResponseData("error occured at fetch Api: "+error)
                 console.log(error);
@@ -37,21 +38,21 @@ const UserDetails = ()=>{
     
  return (
     <div className="border border-black rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4">
-    <form className="" onSubmit={(e)=>e.preventDefault()}>
+    <form  onSubmit={(e)=>e.preventDefault()}>
         <div className="flex items-center mt-2">
             <div>UserName:</div>
             <div>
-             <input ref={username} className="border border-black rounded-md p-2 w-full ml-5" type="text" defaultValue={username?.current?.value} placeholder="enter user name"></input>
+             <input ref={username} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter user name"></input>
             </div>
         </div>
         <div className="flex items-center mt-2">
             <div>Password:</div>
             <div>
-             <input ref={password} className="border border-black rounded-md p-2 w-full ml-5" type="text" defaultValue={password?.current?.value} placeholder="enter password"></input>
+             <input ref={password} className="border border-black rounded-md p-2 w-full ml-5" type="text" placeholder="enter password"></input>
             </div>
         </div>  
         <div className="text-center my-3">
-            <button className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300" onClick={handleSubmit}>Submit</button>
+            <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300" onClick={handleSubmit}>Submit</button>
         </div>
     </form> 
     <div className="font-serif text-green-700 mt-6 text-center">{responseData}</div>

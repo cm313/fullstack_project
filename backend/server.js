@@ -29,14 +29,14 @@ const intitalizeDBAndServer = ()=>{
 };
 intitalizeDBAndServer();
 
-app.post('/datapost', (request, response)=>{
+app.post('/', (request, response)=>{
     const userDetails = request.body;
     const{id,name,password} = userDetails;
     const addUserQuery = `INSERT INTO userdata(id, name, password)
                             VALUES (
-                                    ${id}, 
-                                    ${name},
-                                    ${password} ) `;
+                                    '${id}', 
+                                    '${name}',
+                                    '${password}' ) `;
           db.query(addUserQuery, (error, result)=>{
             if(error){
                 response.send("Error occured in post method");
