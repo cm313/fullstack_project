@@ -1,11 +1,28 @@
-import UserDetails from "./components/usersDetails";
+import UsersDetails from "./components/UsersDetails";
+import Login from "./components/Login";
+import {createBrowserRouter} from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-     <UserDetails/>
+     <UsersDetails/>
     </div>
   );
 }
 
-export default App;
+const appRouter = createBrowserRouter([
+  {
+    path:'/',
+    element: <App/>,
+    children: [{
+      path: '/',
+      element:<UsersDetails/>
+    }]
+  },
+  {
+    path:'/login',
+    element:<Login/>
+  }
+])
+
+export default appRouter;

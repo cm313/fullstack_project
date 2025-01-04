@@ -5,5 +5,42 @@ Content-Type: application/json
 {
     "id": 1,
     "name": "chandramahesh",
-    "password": "Mahesh@143",
+    "password": "Mahesh@1231"
+}
+
+###
+POST http://localhost:5000
+Content-Type: application/json
+
+{
+    "id": 5,
+    "name": "chandramahesh",
+    "password": "Mahesh@1231"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "userName": "chandramahesh",
+  "password": "Mahesh@123"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "userName": "arunkumar",
+  "password": "arunkumar@123"
+}
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "userName": "Chandra Mahesh",
+  "password": "Mahesh@12"
 }
