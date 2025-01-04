@@ -35,14 +35,14 @@ app.use(cors({
 
 app.post('/', async (request, response)=>{
     const userDetails = request.body;
-    const{userName,password} = userDetails;
+    const{firstName, lastName, email, userName, password} = userDetails;
     const hashedPassword = await bcrypt.hash(password, 8);
     const selectUserQuery = `SELECT * FROM userdata where userName = '${userName}'`;
     const dbUser = await db.query(selectUserQuery);
     if(dbUser[0].length === 0){
-      const addUserQuery = `INSERT INTO userdata(userName, password)
-      VALUES (?, ?)`;
-     await db.query(addUserQuery, [userName, hashedPassword]); 
+      const addUserQuery = `INSERT INTO userdata(firstname, lastname, email, username, password)
+      VALUES (?, ?, ?, ?, ?)`;
+     await db.query(addUserQuery, [firstName, lastName, email, userName, hashedPassword]); 
       response.json("user created succesfully"); 
     }
     else{
@@ -55,7 +55,7 @@ app.post('/', async (request, response)=>{
 app.post('/login', async (request, response)=>{
   const userDetails = request.body;
   const{userName, password} = userDetails;
-  const selectUserQuery =`SELECT * FROM userData where userName = '${userName}'`;
+  const selectUserQuery =`SELECT * FROM userData where username = '${userName}'`;
   const dbUser = await db.query(selectUserQuery);
   if(dbUser[0].length === 0){
      response.status(400);

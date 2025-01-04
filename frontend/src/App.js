@@ -1,4 +1,5 @@
 import UsersDetails from "./components/UsersDetails";
+import UserInterface from "./components/UserInterface";
 import Login from "./components/Login";
 import {createBrowserRouter} from "react-router-dom";
 
@@ -22,6 +23,10 @@ const appRouter = createBrowserRouter([
   {
     path:'/login',
     element:<Login/>
+  },
+  {
+    path: '/userinterface',
+    element: <UserInterface/>
   }
 ])
 

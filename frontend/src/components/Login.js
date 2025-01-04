@@ -1,11 +1,11 @@
 import {useRef, useState} from 'react';
-import {Link} from 'react-router-dom'; 
+import {Link,useNavigate} from 'react-router-dom'; 
 
 const Login = ()=>{
 const userName = useRef(null);
-    const password = useRef(null);
+const password = useRef(null);
+const navigate = useNavigate();
     const [responseData, setResponseData] = useState('');
-    const [accessToken, setAccessToken]  = useState(null);
     const handleSubmit = async ()=>{
         const obj = {
             userName: userName?.current?.value,
@@ -21,9 +21,8 @@ const userName = useRef(null);
                 body: JSON.stringify(obj),
               });
               const data = await response.json();
-              console.log(data.jwtToken);
-              setAccessToken(data.jwtToken);
-              localStorage.setItem()
+              localStorage.setItem('accesstoken', JSON.stringify(data.jwtToken));
+              navigate('/userinterface');
               if(response.ok){
                 setResponseData("Token generated");
               }
@@ -37,7 +36,6 @@ const userName = useRef(null);
         else{
             setResponseData("enter the full detials, please");
         }
-
     }
     
  return (
@@ -63,8 +61,6 @@ const userName = useRef(null);
     <div className="font-serif text-green-700 mt-6 text-center">{responseData}</div>
     </div>
     <Link to='/'><div className='text-center font-serif mt-2 text-violet-700'>Not a loggedin user, please Register here</div></Link>
-
-    <div className="font-serif text-green-700 mt-6 text-center">{accessToken}</div>
     </>
  )
 }

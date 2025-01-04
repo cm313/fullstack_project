@@ -2,15 +2,21 @@ import {useRef, useState} from "react"
 import {Link} from "react-router-dom";
 
 const UsersDetails = ()=>{
+    const firstName = useRef(null);
+    const lastName = useRef(null);
+    const email = useRef(null);
     const userName = useRef(null);
     const password = useRef(null);
     const [responseData, setResponseData] = useState('');
     const handleSubmit = async ()=>{
         const obj = {
+            firstName: firstName?.current?.value,
+            lastName: lastName?.current?.value,
+            email: email?.current?.value,
             userName: userName?.current?.value,
             password: password?.current?.value, 
         }
-        if(obj.userName && obj.password){
+        if(obj.firstName && obj.lastName && obj.email && obj.userName && obj.password){
         try{
               const response = await fetch('http://localhost:5000/',{
                 method: 'POST',
@@ -41,6 +47,24 @@ const UsersDetails = ()=>{
     <>
     <div className="border border-black rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4">
     <form  onSubmit={(e)=>e.preventDefault()}>
+    <div className="flex items-center mt-2">
+            <div>First Name:</div>
+            <div>
+             <input ref={firstName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter first Name"></input>
+            </div>
+        </div>
+        <div className="flex items-center mt-2">
+            <div>Last Name:</div>
+            <div>
+             <input ref={lastName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter last Name"></input>
+            </div>
+        </div>
+        <div className="flex items-center ml-9 mt-2">
+            <div>Email:</div>
+            <div>
+             <input ref={email} className="border border-black rounded-md p-2 w-full ml-5" type="email"  placeholder="enter email"></input>
+            </div>
+        </div>
         <div className="flex items-center mt-2">
             <div>UserName:</div>
             <div>
