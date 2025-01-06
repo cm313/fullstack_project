@@ -66,7 +66,7 @@ app.post('/login', async (request, response)=>{
     const payload = {userName:userName};
       const isPasswordMatched = await bcrypt.compare(password, userData[0].password);
       if(isPasswordMatched === true){
-          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '1h'});
+          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '15s'});
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '7d'});
         response.send({jwtToken, refreshToken});
       }else{
@@ -91,7 +91,7 @@ function authenticateToken(request, response, next){
         return  response.status(403).json("Access Denied");
         }
         else{
-          console.log(user);
+          request.user = user;
           next();
         }
       } );
@@ -104,6 +104,6 @@ function authenticateToken(request, response, next){
 }
 
 app.get('/userinterface', authenticateToken, (request, response)=>{
-  response.json("Token validated, Request processed");
+  response.json({message: "Token validated, Request processed", payload: request.user});
 });
 

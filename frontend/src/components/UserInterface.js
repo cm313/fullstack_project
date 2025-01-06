@@ -33,7 +33,8 @@ const UserInterface = ()=>{
       const response = await fetch("http://localhost:5000/userinterface", options);
       const data = await response.json();
       if(response.ok){
-        setResponseData(data);
+        const{message, payload} = data;
+        setResponseData(message);
       }
       else{
         setResponseData(data);
