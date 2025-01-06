@@ -79,22 +79,19 @@ app.post('/login', async (request, response)=>{
 function authenticateToken(request, response, next){
   let jwtToken='';
   const header = request.headers["authorization"];
-  console.log(header);
   if(header !== undefined){
     jwtToken = header.split(" ")[1];
-    console.log(jwtToken);
     if(jwtToken === undefined){
       response.status(401);
       response.json("Invalid JWT Token");
     }
     else{
-      jwt.verify(jwtToken,process.env.JWT_TOKEN_SECRET_KEY, (error, user)=>{
+      jwt.verify(jwtToken, process.env.JWT_TOKEN_SECRET_KEY, (error, user)=>{
         if(error){
-          response.status(403)
-        return  response.json("Access Denied");
+        return  response.status(403).json("Access Denied");
         }
         else{
-          request.user = user;
+          console.log(user);
           next();
         }
       } );

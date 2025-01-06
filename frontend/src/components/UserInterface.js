@@ -9,9 +9,8 @@ const UserInterface = ()=>{
 
     useEffect(()=>{validateUser()},[])
 
-    
+    const jwtToken = JSON.parse(localStorage.getItem("accesstoken"));
    function validateUser(){
-    const jwtToken = localStorage.getItem("accesstoken");
     if(!jwtToken)
         return navigate('/login');
     return;
@@ -24,7 +23,6 @@ const UserInterface = ()=>{
     }
    
     const handleGetData = async ()=>{
-        const jwtToken = localStorage.getItem("accesstoken");
         const options = {
             method: 'GET',
             headers:{
