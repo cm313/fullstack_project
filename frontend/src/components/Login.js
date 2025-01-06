@@ -1,11 +1,23 @@
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect, useContext} from 'react';
 import {Link,useNavigate} from 'react-router-dom'; 
+import userContext from '../utils/context';
 
 const Login = ()=>{
 const userName = useRef(null);
 const password = useRef(null);
 const navigate = useNavigate();
-    const [responseData, setResponseData] = useState('');
+const [responseData, setResponseData] = useState('');
+const {setUserName} = useContext(userContext);
+
+useEffect(()=>{validateUser()},[])
+
+function validateUser(){
+    const jwtToken = localStorage.getItem("accesstoken");
+    if(jwtToken)
+        return navigate('/userinterface');
+    return;
+}
+
     const handleSubmit = async ()=>{
         const obj = {
             userName: userName?.current?.value,
@@ -21,10 +33,11 @@ const navigate = useNavigate();
                 body: JSON.stringify(obj),
               });
               const data = await response.json();
-              localStorage.setItem('accesstoken', JSON.stringify(data.jwtToken));
-              navigate('/userinterface');
               if(response.ok){
-                setResponseData("Token generated");
+                localStorage.setItem('accesstoken', JSON.stringify(data.jwtToken));
+                localStorage.setItem('refreshtoken', JSON.stringify(data.refreshToken));
+                setUserName(obj?.userName);
+                navigate('/userinterface');
               }
               else{
                 setResponseData(data);

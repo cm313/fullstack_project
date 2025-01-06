@@ -3,6 +3,7 @@ const mysql = require('mysql2/promise');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
+require('dotenv').config();
 const app = express();
 app.use(express.json());
 
@@ -51,7 +52,6 @@ app.post('/', async (request, response)=>{
     }                       
 });
 
-
 app.post('/login', async (request, response)=>{
   const userDetails = request.body;
   const{userName, password} = userDetails;
@@ -63,14 +63,50 @@ app.post('/login', async (request, response)=>{
   }
   else{
     const userData = dbUser[0];
+    const payload = {userName:userName};
       const isPasswordMatched = await bcrypt.compare(password, userData[0].password);
       if(isPasswordMatched === true){
-          const jwtToken = jwt.sign({userName:userName}, "jwttokengeneration",{expiresIn: '1h'});
-        response.send({jwtToken});
+          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '1h'});
+          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '7d'});
+        response.send({jwtToken, refreshToken});
       }else{
         response.status(400);
          response.json("Password not valid");
       }
   }
-})
+});
+
+function authenticateToken(request, response, next){
+  let jwtToken='';
+  const header = request.headers["authorization"];
+  console.log(header);
+  if(header !== undefined){
+    jwtToken = header.split(" ")[1];
+    console.log(jwtToken);
+    if(jwtToken === undefined){
+      response.status(401);
+      response.json("Invalid JWT Token");
+    }
+    else{
+      jwt.verify(jwtToken,process.env.JWT_TOKEN_SECRET_KEY, (error, user)=>{
+        if(error){
+          response.status(403)
+        return  response.json("Access Denied");
+        }
+        else{
+          request.user = user;
+          next();
+        }
+      } );
+    }
+  }
+  else{
+    response.status(400);
+    response.json("Bearer Token not provided")
+  }
+}
+
+app.get('/userinterface', authenticateToken, (request, response)=>{
+  response.json("Token validated, Request processed");
+});
 
