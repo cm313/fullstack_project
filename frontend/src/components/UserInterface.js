@@ -11,7 +11,7 @@ const UserInterface = ()=>{
 
 
     useEffect(()=>{
-    //  validateUser();
+      validateUser();
       const validateAndGenerateToken = async () => {
         console.log("enterd validtoken function");
         if (jwtToken && isTokenExpired(jwtToken)) {
@@ -27,7 +27,6 @@ const UserInterface = ()=>{
           console.log("entered validtoken function else block");
           setIsTokenValid(true);
         }
-       
       };
      validateAndGenerateToken();},
      [isTokenValid]);

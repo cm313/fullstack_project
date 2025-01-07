@@ -8,10 +8,12 @@ const password = useRef(null);
 const navigate = useNavigate();
 const [responseData, setResponseData] = useState('');
 const {setUserName} = useContext(userContext);
+localStorage.removeItem("accesstoken");
+localStorage.removeItem("refreshtoken");
 
-useEffect(()=>{
-    //validateUser();
-},[]);
+// useEffect(()=>{
+//     //validateUser();
+// },[]);
 
 function validateUser(){
     const refreshToken = localStorage.getItem("refreshtoken");
