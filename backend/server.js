@@ -67,7 +67,7 @@ app.post('/login', async (request, response)=>{
       const isPasswordMatched = await bcrypt.compare(password, userData[0].password);
       if(isPasswordMatched === true){
           const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '15s'});
-          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '7d'});
+          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '30s'});
         response.send({jwtToken, refreshToken});
       }else{
         response.status(400);
@@ -104,6 +104,30 @@ function authenticateToken(request, response, next){
 }
 
 app.get('/userinterface', authenticateToken, (request, response)=>{
-  response.json({message: "Token validated, Request processed", payload: request.user});
+  response.json("Token validated, Request processed");
+});
+
+
+app.post('/accesstoken', (request, response)=>{
+  const {refreshToken} = request.body;
+  if(!refreshToken){
+    response.status(401);
+    console.log("backend entered, !refreshToken");
+  }
+  else{
+    console.log("refresh token exists in backend");
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY, (error, user)=>{
+      if(error){
+        console.log("encountered error while verifying refresh token")
+        return response.status(403).json("incorrect refresh token");
+      }
+      else{
+        const jwtToken = jwt.sign({user},process.env.JWT_TOKEN_SECRET_KEY,{expiresIn: '30s'})
+        console.log("generated new access token");
+        console.log(jwtToken);
+        response.send(jwtToken);
+      }
+    })
+  }
 });
 

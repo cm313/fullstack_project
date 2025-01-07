@@ -9,11 +9,13 @@ const navigate = useNavigate();
 const [responseData, setResponseData] = useState('');
 const {setUserName} = useContext(userContext);
 
-useEffect(()=>{validateUser()},[])
+useEffect(()=>{
+    //validateUser();
+},[]);
 
 function validateUser(){
-    const jwtToken = localStorage.getItem("accesstoken");
-    if(jwtToken)
+    const refreshToken = localStorage.getItem("refreshtoken");
+    if(refreshToken)
         return navigate('/userinterface');
     return;
 }

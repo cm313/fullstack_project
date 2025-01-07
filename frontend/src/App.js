@@ -3,18 +3,13 @@ import UserInterface from "./components/UserInterface";
 import Login from "./components/Login";
 import {createBrowserRouter, Outlet} from "react-router-dom";
 import userContext from './utils/context';
-import { useState, useEffect } from "react";
+import { useState} from "react";
+
+
 
 function App() {
   const[userName, setUserName] = useState("");
-  const[validToken, setValidToken]= useState("");
-
-  useEffect(()=>{
-  
-  },[validToken]);
-
   return (
-
     <userContext.Provider value={{userName, setUserName}}>
     <div className="App">
      <Outlet/>
@@ -41,7 +36,6 @@ const appRouter = createBrowserRouter([
     }
   ]
   }
-  
 ])
 
 export default appRouter;
