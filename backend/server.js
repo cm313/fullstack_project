@@ -34,14 +34,14 @@ app.use(cors({
 
 app.post('/', async (request, response)=>{
     const userDetails = request.body;
-    const{firstName, lastName, email, userName, password} = userDetails;
+    const{firstName, lastName, email, userName, password, role} = userDetails;
     const hashedPassword = await bcrypt.hash(password, 8);
     const selectUserQuery = `SELECT * FROM userdata where userName = '${userName}'`;
     const dbUser = await db.query(selectUserQuery);
     if(dbUser[0].length === 0){
-      const addUserQuery = `INSERT INTO userdata(firstname, lastname, email, username, password)
-      VALUES (?, ?, ?, ?, ?)`;
-     await db.query(addUserQuery, [firstName, lastName, email, userName, hashedPassword]); 
+      const addUserQuery = `INSERT INTO userdata(firstname, lastname, email, username, password, role)
+      VALUES (?, ?, ?, ?, ?, ?)`;
+     await db.query(addUserQuery, [firstName, lastName, email, userName, hashedPassword, role]); 
       response.json("user created succesfully"); 
     }
     else{
@@ -64,9 +64,9 @@ app.post('/login', async (request, response)=>{
     const payload = {userName:userName};
       const isPasswordMatched = await bcrypt.compare(password, userData[0].password);
       if(isPasswordMatched === true){
-          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '6s'});
-          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '20s'});
-        response.send({jwtToken, refreshToken});
+          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: 60*60});
+          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '7d'});
+        response.send({jwtToken, refreshToken, role:userData[0].role});
       }else{
         response.status(400);
          response.json("Password not valid");
@@ -113,16 +113,16 @@ app.post('/accesstoken', (request, response)=>{
     response.status(401);
   }
   else{
-    console.log("refresh token exists in backend");
+   // console.log("refresh token exists in backend");
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY, (error, user)=>{
       if(error){
      //   console.log("encountered error while verifying refresh token")
         return response.status(403).json("verification of refresh token failed/accesstoken not generated");
       }
       else{
-        const jwtToken = jwt.sign({user},process.env.JWT_TOKEN_SECRET_KEY,{expiresIn: '5s'});
+        const jwtToken = jwt.sign({user},process.env.JWT_TOKEN_SECRET_KEY,{expiresIn: '7d'});
       //  console.log("generated new access token");
-        console.log(jwtToken);
+       // console.log(jwtToken);
         response.send({jwtToken});
       }
     })

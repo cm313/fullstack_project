@@ -7,7 +7,7 @@ const userName = useRef(null);
 const password = useRef(null);
 const navigate = useNavigate();
 const [responseData, setResponseData] = useState('');
-const {setUserName} = useContext(userContext);
+const {setUserName, setRole} = useContext(userContext);
 
 
 useEffect(()=>{
@@ -40,6 +40,7 @@ function validateUser(){
                 localStorage.setItem('accesstoken', JSON.stringify(data.jwtToken));
                 localStorage.setItem('refreshtoken', JSON.stringify(data.refreshToken));
                 setUserName(obj?.userName);
+                setRole(data.role);
                 navigate('/userinterface');
               }
               else{

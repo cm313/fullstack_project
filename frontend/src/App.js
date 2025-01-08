@@ -9,8 +9,9 @@ import { useState} from "react";
 
 function App() {
   const[userName, setUserName] = useState("");
+  const[role, setRole] = useState("");
   return (
-    <userContext.Provider value={{userName, setUserName}}>
+    <userContext.Provider value={{userName, role, setRole, setUserName}}>
     <div className="App">
      <Outlet/>
     </div>

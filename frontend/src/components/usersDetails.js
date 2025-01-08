@@ -8,6 +8,7 @@ const UsersDetails = ()=>{
     const userName = useRef(null);
     const password = useRef(null);
     const [responseData, setResponseData] = useState('');
+    const[role, setRole] = useState("Recruiter");
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
     const handleSubmit = async ()=>{
@@ -18,6 +19,7 @@ const UsersDetails = ()=>{
             email: email?.current?.value,
             userName: userName?.current?.value,
             password: password?.current?.value, 
+            role
         }
         if(obj.firstName && obj.lastName && obj.email && obj.userName && obj.password){
         try{
@@ -45,7 +47,7 @@ const UsersDetails = ()=>{
         }
 
     }
-    
+    console.log(role);
  return (
     <>
     <div className="border border-black rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4">
@@ -80,6 +82,13 @@ const UsersDetails = ()=>{
              <input ref={password} className="border border-black rounded-md p-2 w-full ml-6" type="password" placeholder="enter password"></input>
             </div>
         </div>  
+        <div className="flex items-center mt-2">
+            <div>Select Role:</div>
+         <select value={role} onChange={(e)=>{setRole(e.target.value)}} className="border border-black rounded-md py-2  px-2 ml-7" name="roles" id="roles">
+          <option value="Recruiter">Recruiter</option>
+          <option value="JobSeeker">Job Seeker</option>
+        </select>
+        </div>
         <div className="text-center my-3">
          <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300" onClick={handleSubmit}>Register</button>
         </div>

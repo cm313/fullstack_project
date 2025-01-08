@@ -1,9 +1,11 @@
 import userContext from "../utils/context";
 import { useContext, useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
+import User from "./User";
+import Recruiter from "./Recruiter";
 
 const UserInterface = ()=>{
-    const {userName} = useContext(userContext);
+    const {userName, role} = useContext(userContext);
     const navigate = useNavigate();
     const[responseData, setResponseData] = useState('');
     const[isTokenValid, setIsTokenValid]= useState(true); 
@@ -141,12 +143,17 @@ const UserInterface = ()=>{
 
     return (
         <div>
-        <div className="text-center font-serif text-2xl bg-orange-600 mt-8">Welcome {userName}</div>
+        <div className="text-center font-serif text-2xl  mt-8">Welcome {userName}</div>
         <div className="text-center mt-3 ">
             <button onClick={handleLogout} className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2">Logout</button>
             <button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
             <div>{responseData}</div>
+        </div>{
+        <div className="mt-8">
+           { role=="Recruiter" && <Recruiter/>}
+           { role=="JobSeeker" && <User/>}
         </div>
+       }
         </div>
     )
 }
