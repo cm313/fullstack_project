@@ -7,28 +7,43 @@ const UserInterface = ()=>{
     const navigate = useNavigate();
     const[responseData, setResponseData] = useState('');
     const[isTokenValid, setIsTokenValid]= useState(true); 
+    //const[trigger, setTrigger] = useState();
     const jwtToken = JSON.parse(localStorage.getItem("accesstoken"));
-
+    const refreshToken = JSON.parse(localStorage.getItem('refreshtoken'));
 
     useEffect(()=>{
       validateUser();
+      if(isTokenExpired(refreshToken)){
+        logout();
+        navigate('/login');
+        return;
+      }
       const validateAndGenerateToken = async () => {
-        console.log("enterd validtoken function");
+       // console.log("enterd validtoken function");
         if (jwtToken && isTokenExpired(jwtToken)) {
-          console.log("entered validtoken function if block")
+         // console.log("entered validtoken function if block")
           try {
-            await generateNewToken();
-            setIsTokenValid(true);
+         generateNewToken();
+            //setIsTokenValid(!isTokenValid);
           } catch (error) {
-            setIsTokenValid(false);
+            //setIsTokenValid(!isTokenValid);
             return;
           }
         } else {
-          console.log("entered validtoken function else block");
+         // console.log("entered validtoken function else block");
           setIsTokenValid(true);
         }
       };
-     validateAndGenerateToken();},
+
+    const payload =  JSON.parse(atob(jwtToken.split('.')[1]));
+    const TimerCheck = payload.exp - payload.iat;
+    const timer = setInterval(()=>{
+       setIsTokenValid(!isTokenValid);
+      }, TimerCheck);
+
+     validateAndGenerateToken();
+     return ()=> clearInterval(timer);
+    },
      [isTokenValid]);
 
     function validateUser(){
@@ -37,39 +52,42 @@ const UserInterface = ()=>{
       return;
      }
 
+
      function isTokenExpired(token){
       try{
-        console.log("isTokenFunction entered")
+      //  console.log("isTokenFunction entered")
       const payload =  JSON.parse(atob(token.split('.')[1]));
       const currentTime = Math.floor(Date.now()/1000);
-      console.log(payload.exp);
-      console.log(currentTime);
+     // console.log(payload.exp);
+     // console.log(currentTime);
       if(payload.exp < currentTime){
-        console.log("it entered if block returns true");
+       // console.log("it entered if block returns true");
           return true;
       }
       else{
-        console.log("it enterd else block returns false");
+      //  console.log("it enterd else block returns false");
           return false;
       }
   }
   catch(e){
-    console.log("it entered catch block returns false");
+   // console.log("it entered catch block returns false");
       return true;
   }
   };
+  
+
 
 
     async function generateNewToken(){
-      const refreshToken = JSON.parse(localStorage.getItem("refreshtoken"));
-      console.log("entered generateNewToken Function");
+     // console.log("entered generateNewToken Function");
      
       if(isTokenExpired(refreshToken)){
         console.log("is refresh token expired is true");
+        logout();
           navigate('/login');
-          return;
+          return false;
       }
-      console.log("refreshtoken exists");
+     // console.log("refreshtoken exists");
       const response = await fetch ("http://localhost:5000/accesstoken",{
           method: 'POST',
           headers: {
@@ -81,11 +99,20 @@ const UserInterface = ()=>{
       const data = await response.json();
       if(response.ok){
          localStorage.setItem("accesstoken", JSON.stringify(data.jwtToken));
-         console.log(data.jwtToken);
-         console.log("New access token is generated");
-         return;
+       //  console.log("New access token is generated");  
+      //   console.log(data.jwtToken); 
+       //  return true;
+      }
+      else{
+        console.log(data);
+      //  return false;
       }
   };
+
+  function logout(){
+    localStorage.removeItem('accesstoken');
+    localStorage.removeItem('refreshtoken');
+  }
 
     
     const handleLogout = ()=>{

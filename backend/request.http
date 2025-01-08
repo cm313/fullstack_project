@@ -44,3 +44,17 @@ Content-Type: application/json
   "userName": "Chandra Mahesh",
   "password": "Mahesh@12"
 }
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "userName": "justmahi",
+  "password": "Mahesh@121"
+}
+
+
+###
+GET http://localhost:5000/userinterface
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Imp1c3RtYWhpIiwiaWF0IjoxNzM2MTY2MzEyLCJleHAiOjE3MzYxNjYzNDJ9.uYd0q_vYb_AwhigIZQiE9GsH5vHL4P0J7hhvBiMVSmA
