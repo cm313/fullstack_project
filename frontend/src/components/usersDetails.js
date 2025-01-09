@@ -12,7 +12,6 @@ const UsersDetails = ()=>{
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
     const handleSubmit = async ()=>{
-    
         const obj = {
             firstName: firstName?.current?.value,
             lastName: lastName?.current?.value,

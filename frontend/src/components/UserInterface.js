@@ -125,25 +125,25 @@ const UserInterface = ()=>{
       navigate('/login');
     }
    
-    // const handleGetData = async ()=>{
-    //     const options = {
-    //         method: 'GET',
-    //         headers:{
-    //           'Content-Type': 'application/json',
-    //           'authorization': `Bearer ${jwtToken}`
-    //         }
-    //     }
-    //   const response = await fetch("http://localhost:5000/userinterface", options);
-    //   const data = await response.json();
-    //   if(response.ok){
-    //     setResponseData(data);
-    //   }
-    //   else{
-    //     setResponseData(data);
-    //   }
-    // }
-    //<button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
- //<div>{responseData}</div>
+//     const handleGetData = async ()=>{
+//         const options = {
+//             method: 'GET',
+//             headers:{
+//               'Content-Type': 'application/json',
+//               'authorization': `Bearer ${jwtToken}`
+//             }
+//         }
+//       const response = await fetch("http://localhost:5000/userinterface", options);
+//       const data = await response.json();
+//       if(response.ok){
+//         setResponseData(data);
+//       }
+//       else{
+//         setResponseData(data);
+//       }
+//     }
+//     <button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
+//  <div>{responseData}</div>
     return (
         <div>
         <header className="flex items-center justify-between mx-4 border py-2 px-4 my-2 rounded-md bg-slate-300">
@@ -156,7 +156,7 @@ const UserInterface = ()=>{
             </div>    
         }
         {
-          role === "JobSeeker" && <div className="font-semibold">Apply Jobs</div>
+          role === "JobSeeker" && <div className="font-semibold font-serif text-xl">Apply Jobs</div>
         }
         <div className="text-center mt-3">
             <button onClick={handleLogout} className=" bg-blue-500 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2">Logout</button>       

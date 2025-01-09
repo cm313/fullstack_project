@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from 'react'
+import Jobs from './Jobs';
 
 const User = () => {
   const [jobs, setJobs] = useState([]);
@@ -33,7 +34,7 @@ const User = () => {
       }
          
       
-        const handleApply = async (jobId) => {
+       const handleApply = async (jobId) => {
           setApplication({ ...application, jobId });
           const response = await fetch('http://localhost:5000/apply', {
             method: 'POST',
@@ -47,17 +48,14 @@ const User = () => {
         };
       
         return (
-          <div>
-            <h2>Available Jobs</h2>
-            {jobs.map((job) => (
-              <div key={job.id}>
-                <h3>{job.title}</h3>
-                <p>{job.aboutCompany}</p>
-                <button onClick={() => handleApply(job.id)}>Apply</button>
-              </div>
-            ))}
+          <div className="flex flex-wrap">
+            {
+            jobs.map((job) => (
+              <Jobs key={job.id} handleApply={handleApply} jobApplication = {job} />
+            ))
+            }
           </div>
         );
 }
 
-export default User
+export default User;
