@@ -1,11 +1,13 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 const Recruiter = () => {
+  const[isJobCreated, setIsJobCreated] = useState();
+
   return (
-    <div className="text-center my-auto top-0 bottom-0 font-serif text-lg">
-        Hello Recruiter! Welcome
-    </div>
+  <div className="">
+    
+  </div>
   )
 }
 
-export default Recruiter
+export default Recruiter;

@@ -1,17 +1,18 @@
 import userContext from "../utils/context";
 import { useContext, useEffect, useState } from "react";
-import {useNavigate} from "react-router-dom";
-import User from "./User";
-import Recruiter from "./Recruiter";
+import {useNavigate, Link} from "react-router-dom";
+import User from "./User/User";
+import CreateJob from "./Recruiter/CreateJob";
 
 const UserInterface = ()=>{
-    const {userName, role} = useContext(userContext);
+    const {userName} = useContext(userContext);
     const navigate = useNavigate();
-    const[responseData, setResponseData] = useState('');
+   // const[responseData, setResponseData] = useState('');
     const[isTokenValid, setIsTokenValid]= useState(true); 
-    //const[trigger, setTrigger] = useState();
+    const[isJobButtonClicked, setIsJobButtonCliked] = useState(false);
     const jwtToken = JSON.parse(localStorage.getItem("accesstoken"));
     const refreshToken = JSON.parse(localStorage.getItem('refreshtoken'));
+    const role = localStorage.getItem("role");
 
     useEffect(()=>{
       validateUser();
@@ -120,38 +121,51 @@ const UserInterface = ()=>{
     const handleLogout = ()=>{
       localStorage.removeItem("accesstoken");
       localStorage.removeItem("refreshtoken");
+      localStorage.removeItem("role");
       navigate('/login');
     }
    
-    const handleGetData = async ()=>{
-        const options = {
-            method: 'GET',
-            headers:{
-              'Content-Type': 'application/json',
-              'authorization': `Bearer ${jwtToken}`
-            }
-        }
-      const response = await fetch("http://localhost:5000/userinterface", options);
-      const data = await response.json();
-      if(response.ok){
-        setResponseData(data);
-      }
-      else{
-        setResponseData(data);
-      }
-    }
-
+    // const handleGetData = async ()=>{
+    //     const options = {
+    //         method: 'GET',
+    //         headers:{
+    //           'Content-Type': 'application/json',
+    //           'authorization': `Bearer ${jwtToken}`
+    //         }
+    //     }
+    //   const response = await fetch("http://localhost:5000/userinterface", options);
+    //   const data = await response.json();
+    //   if(response.ok){
+    //     setResponseData(data);
+    //   }
+    //   else{
+    //     setResponseData(data);
+    //   }
+    // }
+    //<button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
+ //<div>{responseData}</div>
     return (
         <div>
-        <div className="text-center font-serif text-2xl  mt-8">Welcome {userName}</div>
-        <div className="text-center mt-3 ">
-            <button onClick={handleLogout} className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2">Logout</button>
-            <button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
-            <div>{responseData}</div>
-        </div>{
+        <header className="flex items-center justify-between mx-4 border py-2 px-4 my-2 rounded-md bg-slate-300">
+        <div className="text-center font-serif text-2xl mt-8">Welcome {userName}</div>
+        {
+            role==="Recruiter" &&
+             <div className="flex font-serif items-center w-1/6 justify-between font-semibold cursor-pointer">
+             <div onClick={()=>{setIsJobButtonCliked(!isJobButtonClicked)}} >{isJobButtonClicked ? "Cancel" : "Create Job"}</div>
+                 <div>Get Applications</div>
+            </div>    
+        }
+        {
+          role === "JobSeeker" && <div className="font-semibold">Apply Jobs</div>
+        }
+        <div className="text-center mt-3">
+            <button onClick={handleLogout} className=" bg-blue-500 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2">Logout</button>       
+        </div>
+        </header>
+        {
         <div className="mt-8">
-           { role=="Recruiter" && <Recruiter/>}
-           { role=="JobSeeker" && <User/>}
+           { role==="JobSeeker" && <User/>}
+           {isJobButtonClicked && <CreateJob/>}
         </div>
        }
         </div>

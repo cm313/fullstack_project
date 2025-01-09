@@ -7,7 +7,7 @@ const userName = useRef(null);
 const password = useRef(null);
 const navigate = useNavigate();
 const [responseData, setResponseData] = useState('');
-const {setUserName, setRole} = useContext(userContext);
+const {setUserName} = useContext(userContext);
 
 
 useEffect(()=>{
@@ -40,7 +40,7 @@ function validateUser(){
                 localStorage.setItem('accesstoken', JSON.stringify(data.jwtToken));
                 localStorage.setItem('refreshtoken', JSON.stringify(data.refreshToken));
                 setUserName(obj?.userName);
-                setRole(data.role);
+                localStorage.setItem("role",data.role);
                 navigate('/userinterface');
               }
               else{
@@ -57,22 +57,22 @@ function validateUser(){
     
  return (
     <>
-    <div className="border border-black rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4">
+    <div className="border shadow-lg rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4 font-serif">
     <form  onSubmit={(e)=>e.preventDefault()}>
         <div className="flex items-center mt-2">
             <div>UserName:</div>
             <div>
-             <input ref={userName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter user name"></input>
+             <input ref={userName} className="border border-sm rounded-md p-2 w-full ml-5" type="text"  placeholder="enter user name"></input>
             </div>
         </div>
         <div className="flex items-center mt-2">
             <div>Password:</div>
             <div>
-             <input ref={password} className="border border-black rounded-md p-2 w-full ml-6" type="text" placeholder="enter password"></input>
+             <input ref={password} className="border border-sm rounded-md p-2 w-full ml-6" type="text" placeholder="enter password"></input>
             </div>
         </div>  
         <div className="text-center my-3">
-         <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300" onClick={handleSubmit}>Login</button>
+         <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300  text-white hover:text-black" onClick={handleSubmit}>Login</button>
         </div>
     </form> 
     <div className="font-serif text-green-700 mt-6 text-center">{responseData}</div>

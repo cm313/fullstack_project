@@ -6,7 +6,7 @@ const UsersDetails = ()=>{
     const lastName = useRef(null);
     const email = useRef(null);
     const userName = useRef(null);
-    const password = useRef(null);
+    const password = useRef(null); 
     const [responseData, setResponseData] = useState('');
     const[role, setRole] = useState("Recruiter");
     localStorage.removeItem("accesstoken");
@@ -47,50 +47,50 @@ const UsersDetails = ()=>{
         }
 
     }
-    console.log(role);
+ 
  return (
     <>
-    <div className="border border-black rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4">
+    <div className="border shadow-lg rounded-md w-3/12 mt-8 m-auto right-0 left-0 p-4 font-serif">
     <form  onSubmit={(e)=>e.preventDefault()}>
     <div className="flex items-center mt-2">
             <div>First Name:</div>
             <div>
-             <input ref={firstName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter first Name"></input>
+             <input ref={firstName} className="border shadow-sm rounded-md p-2 w-full ml-5" type="text"  placeholder="enter first Name"></input>
             </div>
         </div>
         <div className="flex items-center mt-2">
             <div>Last Name:</div>
             <div>
-             <input ref={lastName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter last Name"></input>
+             <input ref={lastName} className="border shadow-sm rounded-md p-2 w-full ml-5" type="text"  placeholder="enter last Name"></input>
             </div>
         </div>
         <div className="flex items-center ml-9 mt-2">
             <div>Email:</div>
             <div>
-             <input ref={email} className="border border-black rounded-md p-2 w-full ml-5" type="email"  placeholder="enter email"></input>
+             <input ref={email} className="border shadow-sm rounded-md p-2 w-full ml-5" type="email"  placeholder="enter email"></input>
             </div>
         </div>
         <div className="flex items-center mt-2">
             <div>UserName:</div>
             <div>
-             <input ref={userName} className="border border-black rounded-md p-2 w-full ml-5" type="text"  placeholder="enter user name"></input>
+             <input ref={userName} className="border shadow-sm rounded-md p-2 w-full ml-5" type="text"  placeholder="enter user name"></input>
             </div>
         </div>
         <div className="flex items-center mt-2">
             <div>Password:</div>
             <div>
-             <input ref={password} className="border border-black rounded-md p-2 w-full ml-6" type="password" placeholder="enter password"></input>
+             <input ref={password} className="border shadow-sm rounded-md p-2 w-full ml-6" type="password" placeholder="enter password"></input>
             </div>
         </div>  
         <div className="flex items-center mt-2">
             <div>Select Role:</div>
-         <select value={role} onChange={(e)=>{setRole(e.target.value)}} className="border border-black rounded-md py-2  px-2 ml-7" name="roles" id="roles">
+         <select value={role} onChange={(e)=>{setRole(e.target.value)}} className="border shadow-sm rounded-md py-2  px-2 ml-7" name="roles" id="roles">
           <option value="Recruiter">Recruiter</option>
           <option value="JobSeeker">Job Seeker</option>
         </select>
         </div>
         <div className="text-center my-3">
-         <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300" onClick={handleSubmit}>Register</button>
+         <button type="button" className="bg-blue-500 px-3 py-1 rounded-md font-serif hover:bg-blue-300 text-white hover:text-black" onClick={handleSubmit}>Register</button>
         </div>
     </form> 
     <div className="font-serif text-green-700 mt-6 text-center">{responseData}</div>

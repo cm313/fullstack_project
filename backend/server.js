@@ -74,6 +74,31 @@ app.post('/login', async (request, response)=>{
   }
 });
 
+
+app.post('/createjobs', authenticateToken, async(request, response)=>{
+  try{
+  const jobData = request.body;
+  const {title, aboutCompany, jobResponsibilities, qualifications, skills} = jobData;
+  const InsertJobData = `INSERT INTO jobdata(title, aboutcompany, jobresponsibilities, qualifications, skills)
+      VALUES (?, ?, ?, ?, ?)`;
+      await db.query(InsertJobData, [title, aboutCompany, jobResponsibilities, qualifications, skills]); 
+      response.json("Succesfully posted Job");
+  } catch(e){
+    response.status(400).json("error occured in backend/job posting");
+  }
+});
+
+app.get('/getjobs', authenticateToken, async(request, response)=>{
+  try{
+  const getJobsQuery = `SELECT * FROM jobdata`;
+  const data =  await db.query(getJobsQuery);
+   response.json(data);
+  }
+  catch(e){
+    response.status.json("something went wrong/ getting jobs");
+  }
+})
+
 function authenticateToken(request, response, next){
   let jwtToken='';
   const header = request.headers["authorization"];
@@ -101,9 +126,9 @@ function authenticateToken(request, response, next){
   }
 }
 
-app.get('/userinterface', authenticateToken, (request, response)=>{
-  response.json("Token validated, Request processed");
-});
+// app.get('/userinterface', authenticateToken, (request, response)=>{
+//   response.json("Token validated, Request processed");
+// });
 
 
 app.post('/accesstoken', (request, response)=>{
