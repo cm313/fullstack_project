@@ -5,6 +5,7 @@ import {createBrowserRouter, Outlet} from "react-router-dom";
 import userContext from './utils/context';
 import { useState} from "react";
 import CreateJob from "./components/Recruiter/CreateJob";
+import Application from "./components/User/Application";
 
 
 
@@ -35,15 +36,14 @@ const appRouter = createBrowserRouter([
     },
     {
       path: '/userinterface',
-      element: <UserInterface/>,
-      children: [{
-        path: '/userinterface/createJob',
-        element:<CreateJob/>
-      },
-      ]
+      element: <UserInterface/>
+    },
+    {
+      path:'/application',
+      element: <Application/>
     }
   ]
   }
-])
+]);
 
 export default appRouter;

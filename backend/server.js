@@ -99,6 +99,32 @@ app.get('/getjobs', authenticateToken, async(request, response)=>{
   }
 })
 
+
+app.post('/apply', authenticateToken, async(request, response)=>{
+  try{
+  const applicationData = request.body;
+  console.log(applicationData);
+  const {firstName, lastName, email, skills} = applicationData;
+  const InsertapplicationData = `INSERT INTO applicationdata(firstname, lastname, email, skills)
+      VALUES (?, ?, ?, ?)`;
+      await db.query(InsertapplicationData, [firstName, lastName, email, skills]); 
+      response.json("Application Sent");
+  } catch(e){
+    response.status(400).json("error occured in backend/Job Application");
+  }
+});
+
+app.get('/getjobs', authenticateToken, async(request, response)=>{
+  try{
+  const getJobsQuery = `SELECT * FROM jobdata`;
+  const data =  await db.query(getJobsQuery);
+   response.json(data);
+  }
+  catch(e){
+    response.status.json("something went wrong/ getting jobs");
+  }
+})
+
 function authenticateToken(request, response, next){
   let jwtToken='';
   const header = request.headers["authorization"];

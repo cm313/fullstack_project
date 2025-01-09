@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from "react-router-dom"
 
 const Jobs = ({jobApplication, handleApply}) => {
     const{title, aboutcompany, jobresponsibilities, qualifications, skills, id} = jobApplication
@@ -26,7 +27,7 @@ const Jobs = ({jobApplication, handleApply}) => {
         <div>{skills}</div>
      </div>
      <div className="">
-        <button className=" py-2 px-3 bg-cyan-500 rounded-md font-semibold hover:bg-cyan-300" onClick={()=>{handleApply(id)}}>Apply</button>
+      <Link to='/application'><button className=" py-2 px-3 bg-cyan-500 rounded-md font-semibold hover:bg-cyan-300">Apply</button></Link>  
      </div>
      </div>
     </div>
