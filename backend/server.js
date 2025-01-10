@@ -99,6 +99,18 @@ app.get('/getjobs', authenticateToken, async(request, response)=>{
   }
 });
 
+app.delete('/deleteJob', authenticateToken, async(request, response)=>{
+  const {id} = request.body;
+  try{
+    const deleteJobQuery = `DELETE FROM applicationdata Where id=${id}`
+     await db.query(deleteJobQuery);
+    response.json("succesfully deleted Job Application");
+  }
+  catch(e){
+    response.status(400).json("something went wrong while deleting Application");
+  }
+});
+
 
 app.get('/getjobApplications', authenticateToken, async(request, response)=>{
   try{
@@ -107,7 +119,7 @@ app.get('/getjobApplications', authenticateToken, async(request, response)=>{
    response.json(data);
   }
   catch(e){
-    response.status.json("something went wrong/ getting jobApplications");
+    response.status(400).json("something went wrong/ getting jobApplications");
   }
 });
 

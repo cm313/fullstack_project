@@ -1,7 +1,12 @@
 import React from 'react'
 
-const JobApplications = ({jobApplication}) => {
-    const {title, firstName, lastName, email, skills} = jobApplication;
+const JobApplications = ({jobApplication, handleDelete}) => {
+    const {title, firstName, lastName, email, skills, id} = jobApplication;
+
+
+   
+
+
   return (
     <div className="font-serif border rounded-md pl-5 bg-slate-100 py-5 ml-5 my-2 w-[32%] h-4/12">
         <div className="m-auto left-0 right-0">
@@ -26,7 +31,7 @@ const JobApplications = ({jobApplication}) => {
         <div>{skills}</div>
      </div>
      <div className="">
-      <button className=" py-2 px-3  bg-red-500 rounded-md font-semibold hover:bg-green-400">Delete</button>
+      <button onClick={()=>{handleDelete(id)}} className=" py-2 px-3  bg-red-500 rounded-md font-semibold hover:bg-green-400">Delete</button>
      </div>
      </div>
     </div>

@@ -4,11 +4,12 @@ import JobApplications from './JobApplications';
 const GetApplications = () => {
 
     const [jobApplications, setJobApplications] = useState([]);
+    const [deleteJob, setDeleteJob] = useState(false);
     //const{setJobApplicationsList} = useContext(userContext);
   
           useEffect(() => {
             fetchJobs();
-          }, []);
+          }, [deleteJob]);
   
        
           const fetchJobs = async ()=>{
@@ -30,6 +31,31 @@ const GetApplications = () => {
           }
         }
 
+        const handleDelete = async (id)=>{
+          const options = {
+            method: 'DELETE',
+            headers:{
+              'Content-Type': 'application/json',
+              'authorization': `Bearer ${JSON.parse(localStorage.getItem('accesstoken'))}`
+            },
+            body: JSON.stringify({id}),
+        }
+        try{
+        const response = await fetch("http://localhost:5000/deleteJob", options);
+        const result = await response.json();
+        if(response.ok){
+          setDeleteJob(!deleteJob);
+        }
+        else{
+          alert(result);
+        }
+      }
+      catch(e){
+        alert("error while deleting jobs at fetch");
+      }
+        }
+
+        
 
   return (
     jobApplications.length ===0 ?
@@ -39,7 +65,7 @@ const GetApplications = () => {
     <div className="flex flex-wrap">
       {
       jobApplications.map((job) => {
-      return  <JobApplications key={job.id}  jobApplication = {job} />         
+      return  <JobApplications key={job.id} handleDelete={handleDelete}  jobApplication = {job} />         
        }) 
       }
     </div>
