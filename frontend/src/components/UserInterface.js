@@ -1,8 +1,9 @@
 import userContext from "../utils/context";
 import { useContext, useEffect, useState } from "react";
-import {useNavigate, Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import User from "./User/User";
 import CreateJob from "./Recruiter/CreateJob";
+import GetApplications from "./Recruiter/GetApplications";
 
 const UserInterface = ()=>{
     const {userName} = useContext(userContext);
@@ -10,6 +11,7 @@ const UserInterface = ()=>{
    // const[responseData, setResponseData] = useState('');
     const[isTokenValid, setIsTokenValid]= useState(true); 
     const[isJobButtonClicked, setIsJobButtonCliked] = useState(false);
+    const[isGetApplicationClicked, setIsGetApplicationClicked] = useState(false);
     const jwtToken = JSON.parse(localStorage.getItem("accesstoken"));
     const refreshToken = JSON.parse(localStorage.getItem('refreshtoken'));
     const role = localStorage.getItem("role");
@@ -32,7 +34,7 @@ const UserInterface = ()=>{
             //setIsTokenValid(!isTokenValid);
             return;
           }
-        } else {
+        } else { 
          // console.log("entered validtoken function else block");
           setIsTokenValid(true);
         }
@@ -107,7 +109,7 @@ const UserInterface = ()=>{
        //  return true;
       }
       else{
-        console.log(data);
+        alert(data);
       //  return false;
       }
   };
@@ -115,6 +117,7 @@ const UserInterface = ()=>{
   function logout(){
     localStorage.removeItem('accesstoken');
     localStorage.removeItem('refreshtoken');
+    localStorage.removeItem('role');
   }
 
     
@@ -125,25 +128,19 @@ const UserInterface = ()=>{
       navigate('/login');
     }
    
-//     const handleGetData = async ()=>{
-//         const options = {
-//             method: 'GET',
-//             headers:{
-//               'Content-Type': 'application/json',
-//               'authorization': `Bearer ${jwtToken}`
-//             }
-//         }
-//       const response = await fetch("http://localhost:5000/userinterface", options);
-//       const data = await response.json();
-//       if(response.ok){
-//         setResponseData(data);
-//       }
-//       else{
-//         setResponseData(data);
-//       }
-//     }
-//     <button onClick={handleGetData}className="bg-red-600 text-black rounded-md hover:bg-red-500 font-serif hover:text-white py-1 px-2 ml-2">Get Data</button>
-//  <div>{responseData}</div>
+
+
+ const handleGetApplications = ()=>{
+  setIsJobButtonCliked(false);
+  setIsGetApplicationClicked(!isGetApplicationClicked);
+ }
+
+ const handleCreateJob = ()=>{
+  setIsGetApplicationClicked(false);
+  setIsJobButtonCliked(!isJobButtonClicked)
+ }
+ 
+
     return (
         <div>
         <header className="flex items-center justify-between mx-4 border py-2 px-4 my-2 rounded-md bg-slate-300">
@@ -151,8 +148,8 @@ const UserInterface = ()=>{
         {
             role==="Recruiter" &&
              <div className="flex font-serif items-center w-1/6 justify-between font-semibold cursor-pointer">
-             <div onClick={()=>{setIsJobButtonCliked(!isJobButtonClicked)}} >{isJobButtonClicked ? "Cancel" : "Create Job"}</div>
-                 <div>Get Applications</div>
+             <div onClick={handleCreateJob} >{isJobButtonClicked ? "Cancel" : "Create Job"}</div>
+             <div onClick={handleGetApplications}>{isGetApplicationClicked ? "Cancel" : "Get Application"}</div>
             </div>    
         }
         {
@@ -163,9 +160,10 @@ const UserInterface = ()=>{
         </div>
         </header>
         {
-        <div className="mt-8">
+        <div className="border-b-gray-600 h-screen w-screen">
            { role==="JobSeeker" && <User/>}
            {isJobButtonClicked && <CreateJob/>}
+           {isGetApplicationClicked && <GetApplications/>}
         </div>
        }
         </div>

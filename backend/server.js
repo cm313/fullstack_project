@@ -46,7 +46,7 @@ app.post('/', async (request, response)=>{
     }
     else{
            response.status(400);
-           response.json("user already exists,please login");
+           response.json("username exists");
     }                       
 });
 
@@ -64,7 +64,7 @@ app.post('/login', async (request, response)=>{
     const payload = {userName:userName};
       const isPasswordMatched = await bcrypt.compare(password, userData[0].password);
       if(isPasswordMatched === true){
-          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: 60*60});
+          const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET_KEY ,{expiresIn: '1hr'});
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, {expiresIn: '7d'});
         response.send({jwtToken, refreshToken, role:userData[0].role});
       }else{
@@ -97,17 +97,29 @@ app.get('/getjobs', authenticateToken, async(request, response)=>{
   catch(e){
     response.status.json("something went wrong/ getting jobs");
   }
-})
+});
+
+
+app.get('/getjobApplications', authenticateToken, async(request, response)=>{
+  try{
+  const getJobApplicationsQuery = `SELECT * FROM applicationdata`;
+  const data =  await db.query(getJobApplicationsQuery);
+   response.json(data);
+  }
+  catch(e){
+    response.status.json("something went wrong/ getting jobApplications");
+  }
+});
+
 
 
 app.post('/apply', authenticateToken, async(request, response)=>{
   try{
   const applicationData = request.body;
-  console.log(applicationData);
-  const {firstName, lastName, email, skills} = applicationData;
-  const InsertapplicationData = `INSERT INTO applicationdata(firstname, lastname, email, skills)
-      VALUES (?, ?, ?, ?)`;
-      await db.query(InsertapplicationData, [firstName, lastName, email, skills]); 
+  const {firstName, lastName, email, skills, title} = applicationData;
+  const InsertapplicationData = `INSERT INTO applicationdata(firstname, lastname, email, skills,title)
+      VALUES (?, ?, ?, ?, ?)`;
+      await db.query(InsertapplicationData, [firstName, lastName, email, skills,title]); 
       response.json("Application Sent");
   } catch(e){
     response.status(400).json("error occured in backend/Job Application");
@@ -161,7 +173,7 @@ app.post('/accesstoken', (request, response)=>{
   const {refreshToken} = request.body;
   if(!refreshToken){
   //  console.log("code entered backend server, but no refreshToken provided");
-    response.status(401);
+    response.status(401).json("needed refresh token to generate new accesstoken");
   }
   else{
    // console.log("refresh token exists in backend");

@@ -1,10 +1,9 @@
-import UsersDetails from "./components/UsersDetails";
+import Register from "../src/components/Register"
 import UserInterface from "./components/UserInterface";
 import Login from "./components/Login";
 import {createBrowserRouter, Outlet} from "react-router-dom";
 import userContext from './utils/context';
 import { useState} from "react";
-import CreateJob from "./components/Recruiter/CreateJob";
 import Application from "./components/User/Application";
 
 
@@ -12,9 +11,9 @@ import Application from "./components/User/Application";
 
 function App() {
   const[userName, setUserName] = useState("");
-  const[role, setRole] = useState("");
+  const[jobsList, setJobsList] = useState([]);
   return (
-    <userContext.Provider value={{userName, role, setRole, setUserName}}>
+    <userContext.Provider value={{userName, jobsList, setJobsList, setUserName}}>
     <div className="App">
      <Outlet/>
     </div>
@@ -28,7 +27,7 @@ const appRouter = createBrowserRouter([
     element: <App/>,
     children: [{
       path: '/',
-      element:<UsersDetails/>
+      element:<Register/>
     },
     {
       path:'/login',
@@ -39,7 +38,7 @@ const appRouter = createBrowserRouter([
       element: <UserInterface/>
     },
     {
-      path:'/application',
+      path:'/application/:jobid',
       element: <Application/>
     }
   ]

@@ -1,15 +1,11 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useContext} from 'react'
 import Jobs from './Jobs';
+import userContext from '../../utils/context';
 
 const User = () => {
   const [jobs, setJobs] = useState([]);
-        const [application, setApplication] = useState({
-          firstName: '',
-          lastName: '',
-          skills: '',
-          jobId: ''
-        });
-      
+  const{setJobsList} = useContext(userContext);
+
         useEffect(() => {
           fetchJobs();
         }, []);
@@ -24,35 +20,25 @@ const User = () => {
               }
           }
         const response = await fetch("http://localhost:5000/getJobs", options);
-        const data = await response.json();
+        const jobsdata = await response.json();
         if(response.ok){
-          setJobs(data[0]);
+          setJobs(jobsdata[0]);
+          setJobsList(jobsdata[0]);
         }
         else{
-          alert(data);
+          alert(jobsdata);
         }
       }
-         
-      
-       const handleApply = async (jobId) => {
-          setApplication({ ...application, jobId });
-          const response = await fetch('http://localhost:5000/apply', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('authToken')}`
-            },
-            body: JSON.stringify(application)
-          });
-          if (response.ok) alert('Application submitted!');
-        };
-      
         return (
+          jobs.length ===0 ?
+          <>
+          <div className="text-center my-4 font-bold font-serif text-xl">No Jobs Available at this moment, please visit after some time</div>
+          </> :
           <div className="flex flex-wrap">
             {
-            jobs.map((job) => (
-              <Jobs key={job.id} handleApply={handleApply} jobApplication = {job} />
-            ))
+            jobs.map((job) => {
+            return  <Jobs key={job.id}  jobApplication = {job} />         
+             }) 
             }
           </div>
         );

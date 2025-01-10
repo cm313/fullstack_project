@@ -1,7 +1,7 @@
 import {useRef, useState} from "react"
 import {Link} from "react-router-dom";
 
-const UsersDetails = ()=>{
+const Register = ()=>{
     const firstName = useRef(null);
     const lastName = useRef(null);
     const email = useRef(null);
@@ -11,6 +11,7 @@ const UsersDetails = ()=>{
     const[role, setRole] = useState("Recruiter");
     localStorage.removeItem("accesstoken");
     localStorage.removeItem("refreshtoken");
+    localStorage.removeItem("role");
     const handleSubmit = async ()=>{
         const obj = {
             firstName: firstName?.current?.value,
@@ -42,7 +43,7 @@ const UsersDetails = ()=>{
             }
         }
         else{
-            setResponseData("enter the full detials, please");
+            setResponseData("enter the full details, please");
         }
 
     }
@@ -99,4 +100,4 @@ const UsersDetails = ()=>{
  )
 }
 
-export default UsersDetails;
+export default Register;
